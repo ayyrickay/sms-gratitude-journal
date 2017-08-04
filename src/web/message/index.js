@@ -20,11 +20,9 @@ const parseRequest = (req) => {
 }
 
 router.post('/', urlEncodedParser, (req, res) => {
-  // insertEntry(parseRequest(req.body))
+  insertEntry(parseRequest(req.body))
 
-  console.log('success')
-
-  // res.send('<Response><Message>Response recorded!</Message></Response>')
+  res.send('<Response><Message>Response recorded!</Message></Response>')
 })
 
 module.exports = router

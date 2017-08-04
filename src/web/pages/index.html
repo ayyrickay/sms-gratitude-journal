@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>SMS Gratitude Journal</title>
+    <link href="https://fonts.googleapis.com/css?family=Saira" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/main.css" type="text/css">
+  </head>
+  <body>
+    <div class="container">
+      <section class="about">
+        <h1 class="stack-text">SMS Gratitude Journal</h1>
+        <p>
+          Life is stressful - but, for many of us, there's still a lot to appreciate. Take a second each day to record the people, places, and events for which you're grateful. This service will send you one text a day asking you to reflect on these moments of gratefulness. Just sign up to get started.
+        </p>
+      </section>
+      <section class="content">
+        <p class="status" id="status">
+          Success
+        </p>
+        <form onSubmit="registerUser(); return false" method="post" class="main-form">
+          <label for="name">
+            Name
+            <input type="text" id="name" name="name" placeholder="ex: Jane Smith" autofocus required />
+          </label>
+          <label for="email">
+            Email
+            <input type="email" id="email" name="email" placeholder="ex: jane.smith@gratitude.co" required />
+          </label>
+          <label for="phone">
+            Phone
+            <input type="tel" id="phone" name="phone" placeholder="ex: 558675309" required />
+          </label>
+          <button type="submit">Get Started</button>
+        </form>
+      </section>
+    </div>
+    <script type="text/javascript">
+      const registerUser = () => {
+        return fetch('/register', {
+    	    method: 'post',
+          headers: new Headers({"Content-Type": "application/json"}),
+  	      body: JSON.stringify({
+  		       name: document.getElementById('name').value,
+  		       email: document.getElementById('email').value,
+             phone: document.getElementById('phone').value
+  	      })
+        })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data)
+          if (data.error) {
+            document.getElementById('status').style.visibility = "visible"
+            document.getElementById('status').innerHTML = data.error
+            document.getElementById('status').style.color = "#c0392b"
+          } else {
+            document.getElementById('status').style.visibility = "visible"
+            document.getElementById('status').style.color = "#27ae60"
+          }
+        })
+      }
+    </script>
+  </body>
+</html>
