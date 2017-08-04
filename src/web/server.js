@@ -9,7 +9,7 @@ app.use('/message', message)
 
 
 console.log(config)
-db.connect(config.DATABASE_URL, (err) => {
+db.connect(config.MONGODB_URI, (err) => {
   if (err) {
     console.error('Unable to connect to MongoDB.')
   } else {

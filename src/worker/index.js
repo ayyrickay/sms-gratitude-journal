@@ -8,7 +8,7 @@ import {sendMessage} from './twilio'
 let dailyText
 
 const recurrence = new schedule.RecurrenceRule()
-recurrence.minute = 00
+recurrence.minute = 0
 recurrence.hour = 9
 
 async function findUsers () {
@@ -23,7 +23,7 @@ async function sendMessageToUsers (users) {
   })
 }
 
-db.connect(config.DATABASE_URL, (err) => {
+db.connect(config.MONGODB_URI, (err) => {
   if (err) {
     console.error('Unable to connect to MongoDB.')
   } else {
