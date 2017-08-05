@@ -7,12 +7,13 @@ const router = express.Router()
 const urlEncodedParser = bodyParser.urlencoded({extended: false})
 
 const insertEntry = (entry) => {
+  console.log('inserting journal entry')
   const entries = db.get().collection('entries')
   entries.insert(entry)
 }
 
 const parseRequest = (req) => {
-  const text = req.body.split(';')
+  const text = req.Body.split(';')
   const date = new Date()
   const phone = req.from
 
