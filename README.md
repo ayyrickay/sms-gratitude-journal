@@ -4,97 +4,20 @@
 This application is an SMS-based journal for people who are looking to express gratitude in their day to day lives.
 
 ## Setup
-First, install all dependencies using `npm install`. Then, install node-foreman via `npm install -g node-foreman`, then run it using `nf start`. Make sure your database is running.
+First, install all dependencies using `npm install`.
 
-### Twilio setup
+Use the `sample-env` file as the basis for environment variables. There are many strategies for including environment variables in your project - for our purposes, this app uses node-foreman to add environment variables into the local application.
 
-To start using Twilio, use the .env file - and for any lost souls who look at this project and don't have the .env file, create one in the iot-gym directory, and include your Twilio auth token and SID. .env should look like:
+To use `node-foreman`, install via `npm install -g foreman`, then run it using `nf start`. Make sure your database is running, and that a twilio webhook is set up to handle user responses.
 
-```
-TWILIO_AUTH: #################################
-TWILIO_SID:  #################################
-```
+## Architecture
+This system has three major components:
 
-Finally, once the server is running, feel free to test the Twilio recommendation by changing `to` in the JSON field to the number of your choice. Then, using localhost and the current port of the application, you can POST the recommendation using CURL or a tool like PostMan. You could probably also just change it to a GET request. ;)
+#### worker
+The worker reads from the database, and uses the collection of users to send a daily text message to users.
 
-## Verbs
+#### web
+The web server performs read and write operations against the database. It's also the connection to the Twilio webhook, and thus receives text messages from the user.
 
-
-
-###check-in
-Indicates that the actor has checked-in with the object. For example, a person checks in with a piece of exercise equipment to indicate they are using the equipment.
-```
-{
-"actor": {
-    "id": "01",
-    "objectType": "person",
-    "displayName": "Ricky" },
-  "verb": "check-in",
-  "object": {
-    “id”: “02”,
-    "objectType": "equipment",
-    "displayName": "Treadmill" },
-  "title": "Ricky is checked in to the treadmill."
-  }
-```
-
-### check-out
-Indicates that the actor has checked-out with the object. For example, a person checks out with the piece of exercise equipment to indicate they are not using the equipment. Also includes duration (in MINUTES).
-```
-{
-"actor": {
-    “id”: “01”,
-    "objectType": "person",
-    "displayName": "Ricky" },
-  "verb": "check-out",
-  "object": {
-    “id”: “02”,
-    "objectType": "equipment",
-    "displayName": "Treadmill" },
-  "title": "Ricky is checked out of the Treadmill.",
-  "duration": "12"
-  }
-```
-
-###recommend
-Indicates that the actor recommends itself to the object. For example, a treadmill will recommend itself to a person who needs cardio.
-```
-{
-"actor": {
-    “id”: “01”,
-    "objectType": "equipment",
-    "displayName": "Treadmill" },
-  "verb": "recommend",
-  "object": {
-    “id”: “02”,
-    "objectType": "person",
-    "displayName": "Ricky"}
-  "target" :{
-    “objectType”: "event",
-    “displayName”: "Workout"
-  }
-}
-```
-
-## Object types
-
-
-### Person
-Human being interested in working out
-### Equipment
-Represents any piece of exercise equipment
-### Recommendation
-A suggested object for another actor
-
-## Object Properties
-
-
-### displayName
-The natural-language, human-readable and plain-text keyword or phrase identifying the actor. HTML markup MUST NOT be included.
-
-This property has the type `String`.
-
-### title
-A human-readable descriptive label for the link. HTML-markup SHOULD NOT be used.
-
-This property has the type `String`.
+#### database
+Stores information, as databases tend to do.
