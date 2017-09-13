@@ -8,7 +8,7 @@ import {sendMessage} from './twilio'
 let dailyText
 
 const recurrence = new schedule.RecurrenceRule()
-recurrence.hour = 15
+recurrence.hour = 3
 recurrence.minute = 30
 
 async function findUsers () {
